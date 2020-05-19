@@ -1,0 +1,24 @@
+bin/start.out:  obj/manager.o obj/distance_calculator.o
+	gcc obj/manager.o obj/distance_calculator.o -o bin/start.out -lm
+	
+obj/manager.o: src/distance_calculator.h obj/distance_calculator.o 
+	gcc -c src/manager.c -o obj/manager.o -lm
+	
+obj/distance_calculator.o: src/distance_calculator.h | obj
+	gcc -c src/distance_calculator.c -o obj/distance_calculator.o -lm	
+	
+obj:
+	mkdir -p $@
+	
+bin:	
+	mkdir -p $@
+
+clean:
+	rm -f obj/*.o bin/*.out
+
+#$(SRC)distance_calculator.h
+
+#gcc -c src/distance_calculator.c -o bin/distance_calculator.o -lm
+#gcc -c src/manager.c -o bin/manager.o -lm
+#gcc bin/manager.o bin/distance_calculator.o -o bin/start.out -lm
+

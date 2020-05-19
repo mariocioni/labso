@@ -1,0 +1,31 @@
+bin/start.out:  bin/manager.o bin/distance_calculator.o
+	gcc bin/manager.o bin/distance_calculator.o -o bin/start.out -lm
+	
+bin/manager.o: src/distance_calculator.h bin/distance_calculator.o
+	gcc -c src/manager.c -o bin/manager.o -lm
+	
+bin/distance_calculator.o: src/distance_calculator.h
+	gcc -c src/distance_calculator.c -o bin/distance_calculator.o -lm	
+	
+#$(OUT)reader2.o: src/distance_calculator.h $(OUT)distance_calculator.o
+#	gcc -c src/reader2.c -o $(OUT)/reader2.o -lm
+#$(OUT)distance_calculator.o: src/distance_calculator.h
+#	gcc -c src/distance_calculator.c -o $(OUT)distance_calculator.o -lm	
+#$(OUT)reader2.o: src/distance_calculator.h $(OUT)distance_calculator.o
+#	$(CC) $(CFLAGS) -c $(SRC)reader2.c -o $(OUT)/reader2.o -lm
+#$(OUT)distance_calculator.o: src/distance_calculator.h
+#	$(CC) $(CFLAGS) -c $(SRC)distance_calculator.c -o $(OUT)distance_calculator.o -lm	
+
+
+#$(OBJS): $(SRC)distance_calculator.h
+#	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f bin/*.o bin/*.out
+
+#$(SRC)distance_calculator.h
+
+#gcc -c src/distance_calculator.c -o bin/distance_calculator.o -lm
+#gcc -c src/manager.c -o bin/manager.o -lm
+#gcc bin/manager.o bin/distance_calculator.o -o bin/start.out -lm
+
