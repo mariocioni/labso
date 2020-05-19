@@ -13,7 +13,7 @@
 #define delay 1
 
 void read_comp(FILE *fp);
-FILE *shared_fp;
+FILE *shared_fp, *PFC1_log;
 int status;
 int main(int argc, char **argv) {
 //initialize
@@ -29,6 +29,7 @@ int main(int argc, char **argv) {
 		fp = fopen(argv[1], "r");
 		}
 	shared_fp=fopen("sharedFile.txt","w+");
+	PFC1_log=fopen("./log/speedPFC1.log","w+");
 		
 	pidPFC3=fork();
 	if (pidPFC3==0){	
@@ -38,19 +39,15 @@ int main(int argc, char **argv) {
 	}
 	else{
 		int p=0;
-		printf ("meanwhile parent.. \n");
-		//fscanf(shared_fp,"%s",speed_pfc3);
+		//printf ("meanwhile parent.. \n");
 		double speed_pfc3;
 		int count=0,tmp=0;
-		//fread(speed_pfc3,1,50,shared_fp);
 		while(1){
-				//rewind(shared_fp);
 				if (fscanf(shared_fp, "%lf %d\n ", &speed_pfc3, &count)>0){
-					//printf("Parent received something\n");
 					if (count<0)
 						break;
 					if(count>tmp) {
-						
+						fprintf(PFC1_log, "%lf %d\n", speed_pfc3, count); 
 						printf("Parent received %lf at count %d and temp %d\n",speed_pfc3, count, tmp);
 						tmp=count;
 					}	
@@ -60,6 +57,8 @@ int main(int argc, char **argv) {
 		}
 	wait(&status);	
 	fclose(fp);
+	fclose(shared_fp); 
+	fclose(PFC1_log);
     return 0;
 }
 

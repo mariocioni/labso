@@ -13,7 +13,7 @@ $(EXEC):  $(OBJECTS)
 all: $(OBJECTS)
 	$(CC) $(CFLAGS) $^ -o $@
 
-$(OBJ)/%.o: $(SRC)/%.c | buildDirs
+$(OBJ)/%.o: $(SRC)/%.c
 	$(CC) -I$(SRC) -c $< -o $@
 
 buildDirs:
