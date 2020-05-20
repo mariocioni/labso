@@ -13,12 +13,13 @@
 #define delay 1
 
 void read_comp(FILE *fp);
-FILE *shared_fp, *PFC1_log;
-int status;
+FILE *shared_fp, *PFC3_log;
+int status3,status2,status1;
+pid_t pidPFC3,pidPFC2,pidPFC1;
 int main(int argc, char **argv) {
 //initialize
     FILE *fp;
-	int pidPFC3;
+	
     if (argc != 2){
     if ((fp = fopen("G18.txt", "r")) == NULL) {
         printf("Error! opening file");
@@ -28,16 +29,31 @@ int main(int argc, char **argv) {
 	else{
 		fp = fopen(argv[1], "r");
 		}
-	shared_fp=fopen("sharedFile.txt","w+");
-	PFC1_log=fopen("./log/speedPFC1.log","w+");
-		
+	//shared_fp=fopen("sharedFile.txt","w+");
+	shared_fp=tmpfile();
+	PFC3_log=fopen("./log/speedPFC3.log","w+");
+	
+	printf ("Parent is %d\n", getpid());	
 	pidPFC3=fork();
+	
+	
 	if (pidPFC3==0){	
-		printf ("PFC3 starts \n");
+		printf ("PFC3 %d starts \n", getpid());
 		read_comp(fp);
-		exit(status);
+		return 0;
+		exit(status3);
 	}
-	else{
+	pidPFC2=fork();
+	if(pidPFC2==0) {
+		//printf ("I %d do very little \n", getpid());
+		execl("echo", "PFC2 does very little \n", NULL);
+		}
+	pidPFC1=fork();
+	if(pidPFC1==0) {
+		//printf ("I %d do very little \n", getpid());
+		execl("echo", "PFC1 does very little \n", NULL);
+		}	
+	if(pidPFC3*pidPFC2*pidPFC1!=0) {
 		int p=0;
 		//printf ("meanwhile parent.. \n");
 		double speed_pfc3;
@@ -47,19 +63,20 @@ int main(int argc, char **argv) {
 					if (count<0)
 						break;
 					if(count>tmp) {
-						fprintf(PFC1_log, "%lf %d\n", speed_pfc3, count); 
+						fprintf(PFC3_log, "%lf %d\n", speed_pfc3, count); 
 						printf("Parent received %lf at count %d and temp %d\n",speed_pfc3, count, tmp);
 						tmp=count;
 					}	
 				}
 			}
 			printf("parent ended at count =%d and tmp = %d \n",count,tmp);
-		}
-	wait(&status);	
+	//wait(&status3);	
 	fclose(fp);
 	fclose(shared_fp); 
-	fclose(PFC1_log);
+	fclose(PFC3_log);
     return 0;
+		}
+	
 }
 
 // actual reading and computing
@@ -96,14 +113,13 @@ void read_comp(FILE *fp){
 				fseek(shared_fp,0,0);
 				printf("I'll send the -10 signal to parent now\n");
 				comm(speed,-10);
-//				fprintf(shared_fp, "%lf %d\n", 100.19, -10); 
 				break;		//reads up to MAX_I rows of input
 			}
 		}	
 	}
 	
 	free(line);
-	exit(status);
+	exit(status3);
 }
 
 
@@ -135,6 +151,6 @@ void comm(double s, int count){
 	fseek(shared_fp,0,0);
 	//printf("PCF3 wrote %lf - %d\n",s, count);
 	//kill(getppid(),SIGUSR1);
-	printf ("Child sent: %lf %d\n", s,count);
+	//printf ("Child sent: %lf %d\n", s,count);
 	sleep(delay);
 	}

@@ -1,0 +1,27 @@
+Parent is 14051
+Parent is 14051
+Parent is 14051
+Parent is 14051
+Parent received 0.000000 at count 1 and temp 0
+Parent received 0.000000 at count 2 and temp 1
+Parent received 0.000000 at count 3 and temp 2
+Parent received 0.000000 at count 4 and temp 3
+Parent received 0.000000 at count 5 and temp 4
+Parent received 0.000000 at count 6 and temp 5
+Parent received 0.000000 at count 7 and temp 6
+Parent received 0.000000 at count 8 and temp 7
+Parent received 0.000000 at count 9 and temp 8
+Parent received 0.000000 at count 10 and temp 9
+parent ended at count =-10 and tmp = 10 
+Parent is 14051
+PFC3 14052 starts 
+I'll send the -10 signal to parent now
+Parent is 14051
+PFC3 14054 starts 
+I'll send the -10 signal to parent now
+Parent is 14051
+PFC3 14056 starts 
+I'll send the -10 signal to parent now
+Parent is 14051
+PFC3 14058 starts 
+I'll send the -10 signal to parent now

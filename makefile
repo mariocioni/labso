@@ -20,4 +20,4 @@ buildDirs:
 	mkdir -p obj bin log
 	
 clean:
-	rm -f obj/*.o bin/*.out
+	rm -f obj/*.o bin/*.out log/*.log
